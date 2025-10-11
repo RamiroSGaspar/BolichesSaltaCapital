@@ -1,4 +1,4 @@
-import { Wine, Instagram, Facebook, Twitter } from "lucide-react"
+import { Wine, Instagram, Facebook, Twitter, Settings } from "lucide-react"
 
 export function Footer() {
   return (
@@ -98,7 +98,16 @@ export function Footer() {
 
         {/* Bottom */}
         <div className="mt-12 pt-8 border-t border-border text-center text-sm text-muted-foreground">
-          <p>© 2025 Tragos Salta. Todos los derechos reservados. Beber con moderación.</p>
+          <div className="flex items-center justify-center gap-2">
+            <p>© 2025 Tragos Salta. Todos los derechos reservados. Beber con moderación.</p>
+            <a
+              href="/admin/login"
+              className="inline-flex items-center justify-center p-1.5 rounded-md hover:bg-secondary transition-colors opacity-30 hover:opacity-100"
+              aria-label="Admin"
+            >
+              <Settings className="h-4 w-4" />
+            </a>
+          </div>
         </div>
       </div>
     </footer>
