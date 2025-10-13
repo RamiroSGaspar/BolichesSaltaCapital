@@ -106,14 +106,17 @@ export function Navbar() {
           </div>
 
           <div className="hidden md:flex items-center gap-8">
-            <a href="#inicio" className="text-foreground hover:text-primary transition-colors">
+            <a href="/#inicio" className="text-foreground hover:text-primary transition-colors">
               Inicio
             </a>
-            <a href="#boliches" className="text-foreground hover:text-primary transition-colors">
+            <a href="/#boliches" className="text-foreground hover:text-primary transition-colors">
               Boliches
             </a>
-            <a href="#precios" className="text-foreground hover:text-primary transition-colors">
-              Precios
+            <a href="/eventos" className="text-foreground hover:text-primary transition-colors">
+              Eventos y Fiestas
+            </a>
+            <a href="/precios" className="text-foreground hover:text-primary transition-colors">
+              Comparador de Precios
             </a>
           </div>
 
@@ -187,11 +190,18 @@ export function Navbar() {
               Boliches
             </a>
             <a
-              href="/#precios"
+              href="/eventos"
               className="block text-foreground hover:text-primary transition-colors"
               onClick={() => setIsOpen(false)}
             >
-              Precios
+              Eventos y Fiestas
+            </a>
+            <a
+              href="/precios"
+              className="block text-foreground hover:text-primary transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              Comparador de Precios
             </a>
           </div>
         )}

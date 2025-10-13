@@ -56,11 +56,6 @@ export function Footer() {
                   Política de Privacidad
                 </a>
               </li>
-              <li>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm">
-                  Agregar tu Boliche
-                </a>
-              </li>
             </ul>
           </div>
 

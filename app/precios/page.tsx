@@ -126,21 +126,23 @@ export default function PreciosPage() {
         {/* Tabla comparativa */}
         <Card>
           <CardHeader>
-            <CardTitle>Comparación de Precios</CardTitle>
+            <CardTitle>Comparación de Precios por Boliche</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-left py-4 px-4 font-semibold sticky left-0 bg-card">Trago</th>
-                    {boliches.slice(0, 5).map((boliche) => (
-                      <th key={boliche.id} className="text-center py-4 px-4 font-semibold min-w-[120px]">
-                        {boliche.name}
+                    <th className="text-left py-4 px-4 font-semibold sticky left-0 bg-card z-10">Trago</th>
+                    {boliches.map((boliche) => (
+                      <th key={boliche.id} className="text-center py-4 px-3 font-semibold min-w-[100px]">
+                        <div className="flex flex-col items-center gap-1">
+                          <span className="text-sm">{boliche.name}</span>
+                        </div>
                       </th>
                     ))}
-                    <th className="text-center py-4 px-4 font-semibold">Promedio</th>
-                    <th className="text-center py-4 px-4 font-semibold">Mejor</th>
+                    <th className="text-center py-4 px-4 font-semibold bg-secondary/50">Promedio</th>
+                    <th className="text-center py-4 px-4 font-semibold bg-green-500/10">Mejor Precio</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -151,7 +153,7 @@ export default function PreciosPage() {
 
                     return (
                       <tr key={trago.id} className="border-b hover:bg-secondary/50 transition-colors">
-                        <td className="py-4 px-4 sticky left-0 bg-card">
+                        <td className="py-4 px-4 sticky left-0 bg-card z-10">
                           <div>
                             <p className="font-medium">{trago.name}</p>
                             <Badge variant="outline" className="text-xs mt-1">
@@ -160,15 +162,15 @@ export default function PreciosPage() {
                           </div>
                         </td>
 
-                        {boliches.slice(0, 5).map((boliche) => {
+                        {boliches.map((boliche) => {
                           const precio = preciosPorBoliche.find(
                             (p) => p.bolicheId === boliche.id && p.tragoId === trago.id,
                           )
 
                           if (!precio || !precio.disponible) {
                             return (
-                              <td key={boliche.id} className="py-4 px-4 text-center text-muted-foreground">
-                                -
+                              <td key={boliche.id} className="py-4 px-3 text-center text-muted-foreground">
+                                <span className="text-sm">No disponible</span>
                               </td>
                             )
                           }
@@ -177,28 +179,30 @@ export default function PreciosPage() {
                           const esMasAlto = precio.precio === precioMasAlto
 
                           return (
-                            <td key={boliche.id} className="py-4 px-4 text-center">
-                              <span
-                                className={`font-semibold ${
-                                  esMasBajo ? "text-green-600" : esMasAlto ? "text-red-600" : "text-foreground"
-                                }`}
-                              >
-                                ${precio.precio.toLocaleString()}
-                              </span>
-                              {esMasBajo && (
-                                <Badge variant="default" className="ml-2 bg-green-600 text-xs">
-                                  Mejor
-                                </Badge>
-                              )}
+                            <td key={boliche.id} className="py-4 px-3 text-center">
+                              <div className="flex flex-col items-center gap-1">
+                                <span
+                                  className={`font-semibold text-base ${
+                                    esMasBajo ? "text-green-600" : esMasAlto ? "text-red-600" : "text-foreground"
+                                  }`}
+                                >
+                                  ${precio.precio.toLocaleString()}
+                                </span>
+                                {esMasBajo && (
+                                  <Badge variant="default" className="bg-green-600 text-xs px-2 py-0">
+                                    Mejor
+                                  </Badge>
+                                )}
+                              </div>
                             </td>
                           )
                         })}
 
-                        <td className="py-4 px-4 text-center font-semibold">
+                        <td className="py-4 px-4 text-center font-semibold bg-secondary/30">
                           {promedio ? `$${promedio.toLocaleString()}` : "-"}
                         </td>
 
-                        <td className="py-4 px-4 text-center">
+                        <td className="py-4 px-4 text-center bg-green-500/5">
                           {precioMasBajo && (
                             <div className="flex items-center justify-center gap-1">
                               <TrendingDown className="h-4 w-4 text-green-500" />
@@ -211,6 +215,21 @@ export default function PreciosPage() {
                   })}
                 </tbody>
               </table>
+            </div>
+
+            <div className="mt-6 flex flex-wrap gap-4 justify-center text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-green-600"></div>
+                <span>Mejor precio</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-red-600"></div>
+                <span>Precio más alto</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-foreground"></div>
+                <span>Precio intermedio</span>
+              </div>
             </div>
           </CardContent>
         </Card>
