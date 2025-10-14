@@ -1,26 +1,110 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { AdminHeader } from "@/components/admin/header"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import { Search, Plus, Edit, Eye, Trash2, Grid3x3, List } from "lucide-react"
-import { boliches } from "@/lib/data"
+import { getAllBoliches, createBoliche, deleteBoliche } from "@/lib/api/boliches"
+import type { Boliche } from "@/lib/data"
+import { useRouter } from "next/navigation"
 
 export default function BolichesPage() {
+  const router = useRouter()
   const [viewMode, setViewMode] = useState<"grid" | "table">("grid")
   const [searchQuery, setSearchQuery] = useState("")
+  const [boliches, setBoliches] = useState<Boliche[]>([])
+  const [loading, setLoading] = useState(true)
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [formData, setFormData] = useState({
+    id: "",
+    name: "",
+    location: "",
+    barrio: "",
+    telefono: "",
+    instagram: "",
+    nightTheme: "",
+    dj: "",
+    horario: "",
+    description: "",
+    image: "",
+    diasAbierto: [] as string[],
+    destacado: false
+  })
 
-  const filteredBoliches = boliches.filter((b) => b.name.toLowerCase().includes(searchQuery.toLowerCase()))
+  useEffect(() => {
+    fetchBoliches()
+  }, [])
+
+  async function fetchBoliches() {
+    try {
+      const data = await getAllBoliches()
+      setBoliches(data)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function handleCreate() {
+    try {
+      await createBoliche({
+        ...formData,
+        direccionCompleta: `${formData.location}, ${formData.barrio}`
+      })
+      setDialogOpen(false)
+      fetchBoliches()
+      resetForm()
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  async function handleDelete(id: string) {
+    if (!confirm("¿Eliminar este boliche?")) return
+    try {
+      await deleteBoliche(id)
+      fetchBoliches()
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  function resetForm() {
+    setFormData({
+      id: "",
+      name: "",
+      location: "",
+      barrio: "",
+      telefono: "",
+      instagram: "",
+      nightTheme: "",
+      dj: "",
+      horario: "",
+      description: "",
+      image: "",
+      diasAbierto: [],
+      destacado: false
+    })
+  }
+
+  const filteredBoliches = boliches.filter((b) => 
+    b.name.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
+  if (loading) return <div>Cargando...</div>
 
   return (
     <>
       <AdminHeader title="Boliches" />
       <div className="p-6 space-y-6">
-        {/* Toolbar */}
         <Card>
           <CardContent className="p-4">
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
@@ -35,128 +119,96 @@ export default function BolichesPage() {
                   />
                 </div>
               </div>
-              <div className="flex gap-2 w-full sm:w-auto">
-                <Select defaultValue="todos">
-                  <SelectTrigger className="w-full sm:w-[150px]">
-                    <SelectValue placeholder="Filtro" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="todos">Todos</SelectItem>
-                    <SelectItem value="activos">Activos</SelectItem>
-                    <SelectItem value="inactivos">Inactivos</SelectItem>
-                    <SelectItem value="destacados">Destacados</SelectItem>
-                  </SelectContent>
-                </Select>
-                <div className="flex gap-1 border rounded-lg p-1">
-                  <Button
-                    variant={viewMode === "grid" ? "secondary" : "ghost"}
-                    size="icon"
-                    onClick={() => setViewMode("grid")}
-                  >
-                    <Grid3x3 className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant={viewMode === "table" ? "secondary" : "ghost"}
-                    size="icon"
-                    onClick={() => setViewMode("table")}
-                  >
-                    <List className="h-4 w-4" />
-                  </Button>
-                </div>
-                <Button className="bg-purple-600 hover:bg-purple-700">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Nuevo
-                </Button>
+              <div className="flex gap-2">
+                <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button className="bg-purple-600 hover:bg-purple-700">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Nuevo
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>Nuevo Boliche</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <div>
+                        <Label>ID</Label>
+                        <Input value={formData.id} onChange={(e) => setFormData({...formData, id: e.target.value})} placeholder="macondo" />
+                      </div>
+                      <div>
+                        <Label>Nombre</Label>
+                        <Input value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
+                      </div>
+                      <div>
+                        <Label>Dirección</Label>
+                        <Input value={formData.location} onChange={(e) => setFormData({...formData, location: e.target.value})} />
+                      </div>
+                      <div>
+                        <Label>Barrio</Label>
+                        <Input value={formData.barrio} onChange={(e) => setFormData({...formData, barrio: e.target.value})} />
+                      </div>
+                      <div>
+                        <Label>Teléfono</Label>
+                        <Input value={formData.telefono} onChange={(e) => setFormData({...formData, telefono: e.target.value})} />
+                      </div>
+                      <div>
+                        <Label>Instagram</Label>
+                        <Input value={formData.instagram} onChange={(e) => setFormData({...formData, instagram: e.target.value})} placeholder="@boliche" />
+                      </div>
+                      <div>
+                        <Label>Temática</Label>
+                        <Input value={formData.nightTheme} onChange={(e) => setFormData({...formData, nightTheme: e.target.value})} />
+                      </div>
+                      <div>
+                        <Label>DJ</Label>
+                        <Input value={formData.dj} onChange={(e) => setFormData({...formData, dj: e.target.value})} />
+                      </div>
+                      <div>
+                        <Label>Horario</Label>
+                        <Input value={formData.horario} onChange={(e) => setFormData({...formData, horario: e.target.value})} placeholder="23:00 - 06:00" />
+                      </div>
+                      <div>
+                        <Label>Descripción</Label>
+                        <Textarea value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} />
+                      </div>
+                      <div>
+                        <Label>URL Imagen</Label>
+                        <Input value={formData.image} onChange={(e) => setFormData({...formData, image: e.target.value})} />
+                      </div>
+                      <Button onClick={handleCreate} className="w-full">Crear Boliche</Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Grid View */}
-        {viewMode === "grid" && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredBoliches.map((boliche) => (
-              <Card key={boliche.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                <img
-                  src={boliche.image || "/placeholder.svg"}
-                  alt={boliche.name}
-                  className="w-full h-48 object-cover"
-                />
-                <CardContent className="p-4 space-y-3">
-                  <div>
-                    <h3 className="font-bold text-lg">{boliche.name}</h3>
-                    <p className="text-sm text-muted-foreground">{boliche.location}</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <Badge variant="secondary" className="bg-green-100 text-green-700">
-                      Activo
-                    </Badge>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm" className="flex-1 bg-transparent">
-                      <Edit className="h-4 w-4 mr-1" />
-                      Editar
-                    </Button>
-                    <Button variant="outline" size="icon">
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                    <Button variant="outline" size="icon">
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
-
-        {/* Table View */}
-        {viewMode === "table" && (
-          <Card>
-            <CardContent className="p-0">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="border-b">
-                    <tr>
-                      <th className="text-left p-4 font-semibold">Nombre</th>
-                      <th className="text-left p-4 font-semibold">Ubicación</th>
-                      <th className="text-left p-4 font-semibold">Estado</th>
-                      <th className="text-left p-4 font-semibold">Destacado</th>
-                      <th className="text-right p-4 font-semibold">Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredBoliches.map((boliche) => (
-                      <tr key={boliche.id} className="border-b hover:bg-gray-50">
-                        <td className="p-4 font-medium">{boliche.name}</td>
-                        <td className="p-4 text-muted-foreground">{boliche.location}</td>
-                        <td className="p-4">
-                          <Badge variant="secondary" className="bg-green-100 text-green-700">
-                            Activo
-                          </Badge>
-                        </td>
-                        <td className="p-4">-</td>
-                        <td className="p-4">
-                          <div className="flex gap-2 justify-end">
-                            <Button variant="ghost" size="icon">
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                            <Button variant="ghost" size="icon">
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                            <Button variant="ghost" size="icon">
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredBoliches.map((boliche) => (
+            <Card key={boliche.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+              <img src={boliche.image || "/placeholder.svg"} alt={boliche.name} className="w-full h-48 object-cover" />
+              <CardContent className="p-4 space-y-3">
+                <div>
+                  <h3 className="font-bold text-lg">{boliche.name}</h3>
+                  <p className="text-sm text-muted-foreground">{boliche.location}</p>
+                </div>
+                <div className="flex gap-2">
+                  <Badge variant="secondary" className="bg-green-100 text-green-700">Activo</Badge>
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" className="flex-1" onClick={() => router.push(`/boliche/${boliche.id}`)}>
+                    <Eye className="h-4 w-4 mr-1" />Ver
+                  </Button>
+                  <Button variant="outline" size="icon" onClick={() => handleDelete(boliche.id)}>
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     </>
   )
