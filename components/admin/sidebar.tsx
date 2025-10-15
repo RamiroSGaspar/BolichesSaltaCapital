@@ -31,9 +31,14 @@ export function Sidebar() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
 
+  const handleLogout = async () => {
+    document.cookie = 'admin-token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+    await fetch('/api/auth/logout', { method: 'POST' })
+    window.location.href = '/admin/login'
+  }
+
   return (
     <>
-      {/* Mobile Menu Button */}
       <Button
         variant="ghost"
         size="icon"
@@ -43,10 +48,8 @@ export function Sidebar() {
         {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
       </Button>
 
-      {/* Overlay */}
       {isOpen && <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setIsOpen(false)} />}
 
-      {/* Sidebar */}
       <aside
         className={cn(
           "fixed left-0 top-0 z-40 h-screen w-64 bg-slate-900 text-white transition-transform duration-300 lg:translate-x-0",
@@ -54,7 +57,6 @@ export function Sidebar() {
         )}
       >
         <div className="flex h-full flex-col">
-          {/* Logo */}
           <div className="flex items-center gap-2 border-b border-slate-800 p-6">
             <Wine className="h-8 w-8 text-purple-500" />
             <div>
@@ -63,7 +65,6 @@ export function Sidebar() {
             </div>
           </div>
 
-          {/* Menu Items */}
           <nav className="flex-1 space-y-1 p-4">
             {menuItems.map((item) => {
               const Icon = item.icon
@@ -85,7 +86,6 @@ export function Sidebar() {
             })}
           </nav>
 
-          {/* Bottom Actions */}
           <div className="border-t border-slate-800 p-4 space-y-1">
             <Link
               href="/admin/configuracion"
@@ -94,13 +94,13 @@ export function Sidebar() {
               <Settings className="h-5 w-5" />
               Configuración
             </Link>
-            <Link
-              href="/"
-              className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition-colors w-full text-left"
             >
               <LogOut className="h-5 w-5" />
               Cerrar Sesión
-            </Link>
+            </button>
           </div>
         </div>
       </aside>

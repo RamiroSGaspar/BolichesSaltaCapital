@@ -11,22 +11,10 @@ export async function getAllTragos() {
   return data as Trago[]
 }
 
-export async function createTrago(trago: Omit<Trago, 'id'>) {
+export async function createTrago(trago: any) {
   const { data, error } = await supabase
     .from('tragos')
     .insert([trago])
-    .select()
-    .single()
-  
-  if (error) throw error
-  return data
-}
-
-export async function updateTrago(id: string, updates: Partial<Trago>) {
-  const { data, error } = await supabase
-    .from('tragos')
-    .update(updates)
-    .eq('id', id)
     .select()
     .single()
   
