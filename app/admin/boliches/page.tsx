@@ -6,36 +6,31 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Search, Plus, Edit, Eye, Trash2, Grid3x3, List } from "lucide-react"
+import { Search, Plus, Eye, Trash2 } from "lucide-react"
 import { getAllBoliches, createBoliche, deleteBoliche } from "@/lib/api/boliches"
 import type { Boliche } from "@/lib/data"
 import { useRouter } from "next/navigation"
 
 export default function BolichesPage() {
   const router = useRouter()
-  const [viewMode, setViewMode] = useState<"grid" | "table">("grid")
-  const [searchQuery, setSearchQuery] = useState("")
   const [boliches, setBoliches] = useState<Boliche[]>([])
   const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState("")
   const [dialogOpen, setDialogOpen] = useState(false)
   const [formData, setFormData] = useState({
-    id: "",
-    name: "",
-    location: "",
-    barrio: "",
-    telefono: "",
-    instagram: "",
-    nightTheme: "",
-    dj: "",
-    horario: "",
-    description: "",
-    image: "",
-    diasAbierto: [] as string[],
-    destacado: false
+  id: "",
+  name: "",
+  location: "",
+  barrio: "",
+  telefono: "",
+  instagram: "",
+  horario: "",
+  description: "",
+  image: "",
+  destacado: false
   })
 
   useEffect(() => {
@@ -58,12 +53,13 @@ export default function BolichesPage() {
       await createBoliche({
         ...formData,
         direccionCompleta: `${formData.location}, ${formData.barrio}`
-      })
+      } as any)
       setDialogOpen(false)
       fetchBoliches()
       resetForm()
     } catch (error) {
       console.error(error)
+      alert('Error al crear boliche')
     }
   }
 
@@ -85,12 +81,9 @@ export default function BolichesPage() {
       barrio: "",
       telefono: "",
       instagram: "",
-      nightTheme: "",
-      dj: "",
       horario: "",
       description: "",
       image: "",
-      diasAbierto: [],
       destacado: false
     })
   }
@@ -155,14 +148,6 @@ export default function BolichesPage() {
                       <div>
                         <Label>Instagram</Label>
                         <Input value={formData.instagram} onChange={(e) => setFormData({...formData, instagram: e.target.value})} placeholder="@boliche" />
-                      </div>
-                      <div>
-                        <Label>Temática</Label>
-                        <Input value={formData.nightTheme} onChange={(e) => setFormData({...formData, nightTheme: e.target.value})} />
-                      </div>
-                      <div>
-                        <Label>DJ</Label>
-                        <Input value={formData.dj} onChange={(e) => setFormData({...formData, dj: e.target.value})} />
                       </div>
                       <div>
                         <Label>Horario</Label>
