@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { AdBanner } from "@/components/ad-banner"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -62,6 +63,11 @@ export default function PreciosPage() {
           <p className="text-xl text-muted-foreground text-balance max-w-2xl mx-auto">
             Encontrá dónde está más barato tu trago favorito
           </p>
+        </div>
+
+        {/* Ad Banner after header */}
+        <div className="mb-8">
+          <AdBanner size="leaderboard" />
         </div>
 
         {/* Stats cards */}
@@ -233,6 +239,11 @@ export default function PreciosPage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Ad Banner before footer */}
+        <div className="mt-12">
+          <AdBanner size="large" />
+        </div>
       </div>
 
       <Footer />

@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Instagram, MapPin, Music, Clock, Phone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import { AdBanner } from "@/components/ad-banner"
 import { useRouter } from "next/navigation"
 
 const categories = ["Todos", "Clásicos", "Premium", "Shots", "Cervezas", "Sin Alcohol"]
@@ -102,6 +103,10 @@ export function BolichePage({ boliche, tragos, otherBoliches }: BolichPageProps)
         </div>
       </section>
 
+      <div className="container mx-auto px-4 py-8">
+        <AdBanner size="leaderboard" />
+      </div>
+
       {/* Barra de categorías sticky */}
       <div className="sticky top-16 z-40 bg-background/95 backdrop-blur-lg border-y border-border">
         <div className="container mx-auto px-4 py-4">
@@ -152,6 +157,10 @@ export function BolichePage({ boliche, tragos, otherBoliches }: BolichPageProps)
                   </CardContent>
                 </Card>
               ))}
+            </div>
+
+            <div className="mt-12">
+              <AdBanner size="medium" />
             </div>
           </div>
         </div>

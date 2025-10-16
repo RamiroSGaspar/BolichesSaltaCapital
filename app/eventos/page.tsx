@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { EventoCard } from "@/components/evento-card"
+import { AdBanner } from "@/components/ad-banner"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -46,6 +47,11 @@ export default function EventosPage() {
           <p className="text-xl text-muted-foreground text-balance max-w-2xl mx-auto">
             Descubrí las mejores noches de la ciudad
           </p>
+        </div>
+
+        {/* Ad Banner after header */}
+        <div className="mb-8">
+          <AdBanner size="leaderboard" />
         </div>
 
         {/* Filtros */}
@@ -112,6 +118,11 @@ export default function EventosPage() {
             </Button>
           </div>
         )}
+
+        {/* Ad Banner before footer */}
+        <div className="mt-12">
+          <AdBanner size="large" />
+        </div>
       </div>
 
       <Footer />

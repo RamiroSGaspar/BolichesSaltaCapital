@@ -3,6 +3,7 @@
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { EventoCard } from "@/components/evento-card"
+import { AdBanner } from "@/components/ad-banner"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -94,6 +95,11 @@ export function EventoPageClient({ eventoId }: EventoPageClientProps) {
       </div>
 
       <div className="container mx-auto px-4 py-12">
+        {/* Ad banner after hero */}
+        <div className="mb-8">
+          <AdBanner size="leaderboard" />
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Columna izquierda */}
           <div className="lg:col-span-2 space-y-6">
@@ -201,6 +207,9 @@ export function EventoPageClient({ eventoId }: EventoPageClientProps) {
                 </CardContent>
               </Card>
             )}
+
+            {/* Ad banner in content area */}
+            <AdBanner size="medium" />
           </div>
 
           {/* Columna derecha */}
@@ -300,6 +309,9 @@ export function EventoPageClient({ eventoId }: EventoPageClientProps) {
                 </Button>
               </CardContent>
             </Card>
+
+            {/* Ad banner in sidebar */}
+            <AdBanner size="medium" />
           </div>
         </div>
 
