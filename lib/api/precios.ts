@@ -23,3 +23,14 @@ export async function updatePrecio(bolicheId: string, tragoId: string, precio: n
   if (error) throw error
   return data
 }
+
+export async function getPreciosByBoliche(bolicheId: string) {
+  const { data, error } = await supabase
+    .from('precios_por_boliche')
+    .select('*, tragos(*)')
+    .eq('boliche_id', bolicheId)
+    .eq('disponible', true)
+  
+  if (error) throw error
+  return data
+}

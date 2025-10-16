@@ -1,96 +1,134 @@
+"use client"
+
+import { useState, useEffect } from "react"
 import { AdminHeader } from "@/components/admin/header"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Search, Download } from "lucide-react"
+import { Search, Plus } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-
-const preciosData = [
-  { trago: "Fernet con Coca", macondo: 4500, patio: 3500, laVieja: 3800 },
-  { trago: "Cerveza Quilmes", macondo: 2800, patio: 2500, laVieja: 2800 },
-  { trago: "Gin Tonic", macondo: 5000, patio: 4800, laVieja: null },
-  { trago: "Vodka Energy", macondo: 4200, patio: 4000, laVieja: 4500 },
-  { trago: "Mojito", macondo: 3500, patio: 3200, laVieja: 3400 },
-]
+import { getAllTragos } from "@/lib/api/tragos"
+import { getAllBoliches } from "@/lib/api/boliches"
+import { getAllPrecios, updatePrecio } from "@/lib/api/precios"
+import type { Trago, Boliche } from "@/lib/data"
 
 export default function PreciosPage() {
+  const [tragos, setTragos] = useState<Trago[]>([])
+  const [boliches, setBoliches] = useState<Boliche[]>([])
+  const [precios, setPrecios] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [formData, setFormData] = useState({ boliche_id: "", trago_id: "", precio: 0 })
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  async function fetchData() {
+    try {
+      const [t, b, p] = await Promise.all([getAllTragos(), getAllBoliches(), getAllPrecios()])
+      setTragos(t)
+      setBoliches(b)
+      setPrecios(p)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function handleCreate() {
+    try {
+      await updatePrecio(formData.boliche_id, formData.trago_id, formData.precio)
+      setDialogOpen(false)
+      fetchData()
+      setFormData({ boliche_id: "", trago_id: "", precio: 0 })
+    } catch (error) {
+      console.error(error)
+      alert('Error al asignar precio')
+    }
+  }
+
+  if (loading) return <div>Cargando...</div>
+
   return (
     <>
-      <AdminHeader title="Precios" />
+      <AdminHeader title="Gestión de Precios" />
       <div className="p-6 space-y-6">
-        {/* Toolbar */}
         <Card>
           <CardContent className="p-4">
-            <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-              <div className="flex-1 w-full sm:w-auto flex gap-2">
-                <Select defaultValue="todas">
-                  <SelectTrigger className="w-full sm:w-[150px]">
-                    <SelectValue placeholder="Categoría" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="todas">Todas</SelectItem>
-                    <SelectItem value="clasicos">Clásicos</SelectItem>
-                    <SelectItem value="premium">Premium</SelectItem>
-                    <SelectItem value="shots">Shots</SelectItem>
-                  </SelectContent>
-                </Select>
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input placeholder="Buscar..." className="pl-10" />
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-purple-600 hover:bg-purple-700">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Asignar Precio
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Asignar Precio a Trago</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div>
+                    <Label>Boliche</Label>
+                    <Select value={formData.boliche_id} onValueChange={(v) => setFormData({...formData, boliche_id: v})}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccionar" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {boliches.map(b => <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label>Trago</Label>
+                    <Select value={formData.trago_id} onValueChange={(v) => setFormData({...formData, trago_id: v})}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccionar" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {tragos.map(t => <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label>Precio</Label>
+                    <Input type="number" value={formData.precio} onChange={(e) => setFormData({...formData, precio: Number(e.target.value)})} />
+                  </div>
+                  <Button onClick={handleCreate} className="w-full">Asignar</Button>
                 </div>
-              </div>
-              <Button variant="outline" className="w-full sm:w-auto bg-transparent">
-                <Download className="h-4 w-4 mr-2" />
-                Exportar
-              </Button>
-            </div>
+              </DialogContent>
+            </Dialog>
           </CardContent>
         </Card>
 
-        {/* Price Comparison Table */}
         <Card>
           <CardContent className="p-0">
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead className="border-b bg-gray-50">
                   <tr>
-                    <th className="text-left p-4 font-semibold">Trago / Boliche</th>
-                    <th className="text-center p-4 font-semibold">Macondo</th>
-                    <th className="text-center p-4 font-semibold">Patio</th>
-                    <th className="text-center p-4 font-semibold">La Vieja</th>
-                    <th className="text-center p-4 font-semibold">Promedio</th>
+                    <th className="text-left p-4 font-semibold">Trago</th>
+                    {boliches.map(b => <th key={b.id} className="text-center p-4 font-semibold">{b.name}</th>)}
                   </tr>
                 </thead>
                 <tbody>
-                  {preciosData.map((row, index) => {
-                    const precios = [row.macondo, row.patio, row.laVieja].filter((p) => p !== null) as number[]
-                    const min = Math.min(...precios)
-                    const max = Math.max(...precios)
-                    const avg = Math.round(precios.reduce((a, b) => a + b, 0) / precios.length)
-
-                    return (
-                      <tr key={index} className="border-b hover:bg-gray-50">
-                        <td className="p-4 font-medium">{row.trago}</td>
-                        <td className="p-4 text-center">
-                          <span className="inline-flex items-center gap-1">
-                            ${row.macondo}
-                            {row.macondo === max && <Badge className="bg-red-100 text-red-700 text-xs">❌</Badge>}
-                          </span>
-                        </td>
-                        <td className="p-4 text-center">
-                          <span className="inline-flex items-center gap-1">
-                            ${row.patio}
-                            {row.patio === min && <Badge className="bg-green-100 text-green-700 text-xs">✅</Badge>}
-                          </span>
-                        </td>
-                        <td className="p-4 text-center">
-                          {row.laVieja ? `$${row.laVieja}` : <span className="text-muted-foreground">-</span>}
-                        </td>
-                        <td className="p-4 text-center font-semibold">${avg}</td>
-                      </tr>
-                    )
-                  })}
+                  {tragos.map((trago) => (
+                    <tr key={trago.id} className="border-b hover:bg-gray-50">
+                      <td className="p-4 font-medium">{trago.name}</td>
+                      {boliches.map(boliche => {
+                        const precio = precios.find(p => p.boliche_id === boliche.id && p.trago_id === trago.id)
+                        return (
+                          <td key={boliche.id} className="p-4 text-center">
+                            {precio ? `$${precio.precio}` : <span className="text-muted-foreground">-</span>}
+                          </td>
+                        )
+                      })}
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

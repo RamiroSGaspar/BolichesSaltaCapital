@@ -18,7 +18,7 @@ export async function getBolicheById(id: string) {
     .eq('id', id)
     .single()
   
-  if (error) throw error
+  if (error) return null
   return data as Boliche
 }
 
@@ -44,6 +44,7 @@ export async function updateBoliche(id: string, updates: Partial<Boliche>) {
   if (error) throw error
   return data as Boliche
 }
+
 
 export async function deleteBoliche(id: string) {
   const { error } = await supabase
