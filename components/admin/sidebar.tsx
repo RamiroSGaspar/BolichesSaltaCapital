@@ -31,10 +31,9 @@ export function Sidebar() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
 
-  const handleLogout = async () => {
-    document.cookie = 'admin-token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
-    await fetch('/api/auth/logout', { method: 'POST' })
-    window.location.href = '/admin/login'
+  const handleLogout = () => {
+  document.cookie = 'admin-token=; path=/; domain=localhost; expires=Thu, 01 Jan 1970 00:00:00 GMT'
+  setTimeout(() => window.location.href = '/admin/login', 100)
   }
 
   return (
