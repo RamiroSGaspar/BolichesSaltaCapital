@@ -3,12 +3,24 @@
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Instagram, MapPin, Music } from "lucide-react"
-import { boliches } from "@/lib/data"
+import { Instagram, MapPin, Clock } from "lucide-react"
+import { getAllBoliches } from "@/lib/api/boliches"
+import type { Boliche } from "@/lib/data"
 import { useRouter } from "next/navigation"
 
 export function ProductCards() {
   const router = useRouter()
+  const [boliches, setBoliches] = useState<Boliche[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    getAllBoliches()
+      .then(data => setBoliches(data))
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false))
+  }, [])
+
+  if (loading) return <div className="py-24 text-center">Cargando...</div>
 
   return (
     <section id="boliches" className="py-24 bg-background">
@@ -18,7 +30,7 @@ export function ProductCards() {
             Los mejores <span className="text-primary">boliches</span> de Salta
           </h2>
           <p className="text-xl text-muted-foreground text-balance max-w-2xl mx-auto">
-            Conoce las noches tematicas y DJs de cada lugar
+            Descubre los mejores lugares para salir
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -35,8 +47,8 @@ export function ProductCards() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div className="flex items-center gap-2 text-muted-foreground"><Music className="h-4 w-4 text-accent" /><span className="text-sm font-medium text-foreground">{boliche.nightTheme}</span></div>
-                <div className="text-sm text-muted-foreground"><span className="text-accent">DJ:</span> {boliche.dj}</div>
+                <div className="flex items-center gap-2 text-muted-foreground"><MapPin className="h-4 w-4 text-accent" /><span className="text-sm font-medium text-foreground">{boliche.barrio}</span></div>
+                <div className="flex items-center gap-2 text-muted-foreground text-sm"><Clock className="h-4 w-4" /><span>{boliche.horario}</span></div>
                 <div className="flex items-center gap-2 text-muted-foreground text-sm"><MapPin className="h-4 w-4" /><span>{boliche.location}</span></div>
               </CardContent>
               <CardFooter className="pt-0"><Button variant="ghost" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">Ver precios y horarios</Button></CardFooter>
