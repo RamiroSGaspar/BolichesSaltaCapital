@@ -32,11 +32,15 @@ interface BolichPageProps {
 }
 
 export function BolichePage({ boliche, tragos, otherBoliches }: BolichPageProps) {
-  const categories = ["Todos", ...Array.from(new Set(tragos.map(t => t.category)))]
+  const categories = ["Todos", "Tragos", "Cervezas", "Shots", "Vinos", "Cocktails", "Sin Alcohol"]
   const [selectedCategory, setSelectedCategory] = useState("Todos")
   const router = useRouter()
 
-  const filteredTragos = selectedCategory === "Todos" ? tragos : tragos.filter((t) => t.category === selectedCategory)
+  const filteredTragos = selectedCategory === "Todos" 
+    ? tragos 
+    : selectedCategory === "Sin Alcohol"
+      ? tragos.filter((t) => !t.alcoholic)
+      : tragos.filter((t) => t.category === selectedCategory)
 
   return (
     <>
@@ -86,25 +90,31 @@ export function BolichePage({ boliche, tragos, otherBoliches }: BolichPageProps)
             </h2>
 
             <div className="space-y-4">
-              {filteredTragos.map((trago) => (
-                <Card key={trago.id} className="hover:shadow-lg transition-shadow">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-xl font-bold text-foreground">{trago.name}</h3>
-                          {!trago.alcoholic && <span className="text-xs px-2 py-1 bg-accent/20 text-accent rounded-full font-medium">Sin Alcohol</span>}
+              {filteredTragos.length > 0 ? (
+                filteredTragos.map((trago) => (
+                  <Card key={trago.id} className="hover:shadow-lg transition-shadow">
+                    <CardContent className="p-6">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="text-xl font-bold text-foreground">{trago.name}</h3>
+                            {!trago.alcoholic && <span className="text-xs px-2 py-1 bg-accent/20 text-accent rounded-full font-medium">Sin Alcohol</span>}
+                          </div>
+                          <p className="text-sm text-muted-foreground">{trago.description}</p>
+                          <p className="text-xs text-muted-foreground mt-1">{trago.category}</p>
                         </div>
-                        <p className="text-sm text-muted-foreground">{trago.description}</p>
-                        <p className="text-xs text-muted-foreground mt-1">{trago.category}</p>
+                        <div className="text-right">
+                          <p className="text-2xl font-bold text-primary">${trago.price}</p>
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <p className="text-2xl font-bold text-primary">${trago.price}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground">No hay tragos en esta categoría</p>
+                </div>
+              )}
             </div>
           </div>
         </div>

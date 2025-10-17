@@ -22,6 +22,18 @@ export async function createTrago(trago: any) {
   return data
 }
 
+export async function updateTrago(id: string, trago: any) {
+  const { data, error } = await supabase
+    .from('tragos')
+    .update(trago)
+    .eq('id', id)
+    .select()
+    .single()
+  
+  if (error) throw error
+  return data
+}
+
 export async function deleteTrago(id: string) {
   const { error } = await supabase
     .from('tragos')
