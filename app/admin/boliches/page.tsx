@@ -32,7 +32,9 @@ export default function BolichesPage() {
     horario: "",
     description: "",
     image: "",
-    destacado: false
+    destacado: false,
+    latitude: "",
+    longitude: ""
   })
 
   useEffect(() => {
@@ -61,7 +63,9 @@ export default function BolichesPage() {
       horario: "",
       description: "",
       image: "",
-      destacado: false
+      destacado: false,
+      latitude: "",
+      longitude: ""
     })
     setEditingId(null)
   }
@@ -78,7 +82,9 @@ export default function BolichesPage() {
       horario: boliche.horario || "",
       description: boliche.description || "",
       image: boliche.image || "",
-      destacado: boliche.destacado || false
+      destacado: boliche.destacado || false,
+      latitude: boliche.latitude?.toString() || "",
+      longitude: boliche.longitude?.toString() || ""
     })
     setDialogOpen(true)
   }
@@ -95,7 +101,9 @@ export default function BolichesPage() {
         description: formData.description,
         image: formData.image,
         destacado: formData.destacado,
-        direccionCompleta: `${formData.location}, ${formData.barrio}`
+        direccionCompleta: `${formData.location}, ${formData.barrio}`,
+        latitude: formData.latitude ? parseFloat(formData.latitude) : null,
+        longitude: formData.longitude ? parseFloat(formData.longitude) : null
       }
 
       if (editingId) {
@@ -191,6 +199,28 @@ export default function BolichesPage() {
                     <div>
                       <Label>Horario</Label>
                       <Input value={formData.horario} onChange={(e) => setFormData({...formData, horario: e.target.value})} placeholder="23:00 - 06:00" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label>Latitud</Label>
+                        <Input 
+                          type="number" 
+                          step="any"
+                          value={formData.latitude} 
+                          onChange={(e) => setFormData({...formData, latitude: e.target.value})} 
+                          placeholder="-24.7859" 
+                        />
+                      </div>
+                      <div>
+                        <Label>Longitud</Label>
+                        <Input 
+                          type="number" 
+                          step="any"
+                          value={formData.longitude} 
+                          onChange={(e) => setFormData({...formData, longitude: e.target.value})} 
+                          placeholder="-65.4117" 
+                        />
+                      </div>
                     </div>
                     <div>
                       <Label>Descripción</Label>

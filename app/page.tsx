@@ -3,6 +3,7 @@ import { HeroSection } from "@/components/hero-section"
 import { ProductCards } from "@/components/product-cards"
 import { EventosSection } from "@/components/eventos-section"
 import { ComparadorPrecios } from "@/components/comparador-precios"
+import { MapaBoliches } from "@/components/mapa-boliches"
 import { Footer } from "@/components/footer"
 // import { AdBanner } from "@/components/ad-banner"
 
@@ -29,6 +30,8 @@ export default function Home() {
       </div> */}
 
       <ComparadorPrecios />
+
+      <MapaBoliches />
 
       {/* <div className="container mx-auto px-4 py-8">
         <AdBanner size="large" />

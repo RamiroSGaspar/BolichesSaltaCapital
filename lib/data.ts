@@ -13,6 +13,8 @@ export interface Boliche {
   diasAbierto: string[]
   destacado: boolean
   direccionCompleta: string
+  latitude?: number    // AGREGAR
+  longitude?: number   // AGREGAR
 }
 
 export interface Trago {

@@ -1,10 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { Instagram, MapPin, Music } from "lucide-react"
+import { Instagram, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { useRouter } from "next/navigation"
+import { MapaBolicheIndividual } from "@/components/mapa-boliche-individual"
 
 interface Boliche {
   id: string
@@ -14,6 +15,8 @@ interface Boliche {
   instagram: string
   barrio?: string
   image?: string
+  latitude?: number
+  longitude?: number
 }
 
 interface Trago {
@@ -119,6 +122,8 @@ export function BolichePage({ boliche, tragos, otherBoliches }: BolichPageProps)
           </div>
         </div>
       </section>
+
+      <MapaBolicheIndividual boliche={boliche} />
 
       <section className="py-16 bg-secondary/30">
         <div className="container mx-auto px-4">
