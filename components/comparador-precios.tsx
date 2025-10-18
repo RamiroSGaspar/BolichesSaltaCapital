@@ -44,13 +44,13 @@ export function ComparadorPrecios() {
     const precioObj = preciosTrago.find((p) => p.precio === minPrecio)
     const boliche = boliches.find((b) => b.id === precioObj?.boliche_id)
 
-    return { precio: minPrecio, boliche: boliche?.name || "" }
+    return { precio: minPrecio, boliche: boliche?.name || "", bolicheId: precioObj?.boliche_id }
   }
 
   if (loading) return <div className="py-24 text-center">Cargando precios...</div>
 
   return (
-    <section className="py-24 bg-background">
+    <section id="precios" className="py-24 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center space-y-4 mb-16">
           <div className="flex items-center justify-center gap-3">
@@ -96,7 +96,11 @@ export function ComparadorPrecios() {
                   {tragosFiltrados.slice(0, 6).map((trago) => {
                     const mejorPrecio = getPrecioMasBajo(trago.id)
                     return (
-                      <tr key={trago.id} className="border-b hover:bg-secondary/50 transition-colors">
+                      <tr 
+                        key={trago.id} 
+                        className="border-b hover:bg-secondary/50 transition-colors cursor-pointer"
+                        onClick={() => mejorPrecio?.bolicheId && router.push(`/boliche/${mejorPrecio.bolicheId}`)}
+                      >
                         <td className="py-4 px-4 font-medium">{trago.name}</td>
                         <td className="py-4 px-4 hidden md:table-cell">
                           <Badge variant="outline">{trago.category}</Badge>
