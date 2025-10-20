@@ -7,7 +7,7 @@ import "./globals.css"
 import { Suspense } from "react"
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://tragossalta.com'), // Cambia por tu dominio
+  metadataBase: new URL('https://boliches-salta-capital.vercel.app/'), // Cambia por tu dominio
   title: {
     default: "Tragos Salta - Precios de Boliches en Salta Capital",
     template: "%s | Tragos Salta"
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'es_AR',
-    url: 'https://tragossalta.com',
+    url: 'https://boliches-salta-capital.vercel.app/',
     siteName: 'Tragos Salta',
     title: 'Tragos Salta - Precios de Boliches',
     description: 'Compará precios de tragos en Salta Capital',

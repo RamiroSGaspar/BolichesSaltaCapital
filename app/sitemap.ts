@@ -3,7 +3,7 @@ import { getAllBoliches } from '@/lib/api/boliches'
 import { getAllEventos } from '@/lib/api/eventos'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://tragossalta.com' // Cambiar por tu dominio real
+  const baseUrl = 'https://boliches-salta-capital.vercel.app/' // Cambiar por tu dominio real
   
   const boliches = await getAllBoliches()
   const eventos = await getAllEventos()
