@@ -1,15 +1,28 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { EventoCard } from "./evento-card"
-import { eventos } from "@/lib/data"
+import { getAllEventos } from "@/lib/api/eventos"
+import type { Evento } from "@/lib/data"
 import { Calendar } from "lucide-react"
 
 export function EventosSection() {
-  // Mostrar solo los próximos 4 eventos destacados o más recientes
-  const eventosDestacados = eventos
-    .filter((e) => e.fecha >= new Date())
-    .sort((a, b) => a.fecha.getTime() - b.fecha.getTime())
-    .slice(0, 4)
+  const [eventos, setEventos] = useState<Evento[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    getAllEventos()
+      .then(data => {
+        const proximos = data
+          .filter(e => e.fecha >= new Date())
+          .slice(0, 4)
+        setEventos(proximos)
+      })
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false))
+  }, [])
+
+  if (loading) return <div className="py-24 text-center">Cargando eventos...</div>
 
   return (
     <section className="py-24 bg-secondary/30">
@@ -27,7 +40,7 @@ export function EventosSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {eventosDestacados.map((evento) => (
+          {eventos.map((evento) => (
             <EventoCard key={evento.id} evento={evento} />
           ))}
         </div>

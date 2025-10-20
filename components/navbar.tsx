@@ -1,11 +1,10 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect, useRef } from "react"
 import { Menu, X, Wine, Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
-import { searchItems } from "@/lib/data"
+import { searchItems } from "@/lib/api/search"
 import { useRouter } from "next/navigation"
 
 export function Navbar() {
@@ -17,13 +16,16 @@ export function Navbar() {
   const router = useRouter()
 
   useEffect(() => {
-    if (searchQuery.length > 0) {
-      const results = searchItems(searchQuery)
-      setSearchResults(results)
-      setShowResults(true)
-    } else {
-      setShowResults(false)
+    async function handleSearch() {
+      if (searchQuery.length > 0) {
+        const results = await searchItems(searchQuery)
+        setSearchResults(results)
+        setShowResults(true)
+      } else {
+        setShowResults(false)
+      }
     }
+    handleSearch()
   }, [searchQuery])
 
   useEffect(() => {
@@ -43,6 +45,13 @@ export function Navbar() {
     setIsOpen(false)
   }
 
+  const handleSelectTrago = (nombre: string) => {
+    router.push(`/precios?trago=${encodeURIComponent(nombre)}`)
+    setSearchQuery("")
+    setShowResults(false)
+    setIsOpen(false)
+  }
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && searchResults.boliches.length > 0) {
       handleSelectBoliche(searchResults.boliches[0].id)
@@ -53,7 +62,6 @@ export function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
           <a href="/" className="flex items-center gap-2">
             <Wine className="h-8 w-8 text-primary" />
             <span className="font-bold text-xl text-foreground">Tragos Salta</span>
@@ -83,7 +91,7 @@ export function Navbar() {
                           className="w-full text-left px-3 py-2 hover:bg-secondary rounded-md transition-colors"
                         >
                           <p className="font-medium text-foreground">{boliche.name}</p>
-                          <p className="text-sm text-muted-foreground">{boliche.nightTheme}</p>
+                          <p className="text-sm text-muted-foreground">{boliche.barrio}</p>
                         </button>
                       ))}
                     </div>
@@ -93,10 +101,14 @@ export function Navbar() {
                     <div className="p-2 border-t border-border">
                       <p className="text-xs font-semibold text-muted-foreground px-3 py-2">TRAGOS</p>
                       {searchResults.tragos.slice(0, 5).map((trago) => (
-                        <div key={trago.id} className="px-3 py-2 hover:bg-secondary rounded-md transition-colors">
+                        <button
+                          key={trago.id}
+                          onClick={() => handleSelectTrago(trago.name)}
+                          className="w-full text-left px-3 py-2 hover:bg-secondary rounded-md transition-colors"
+                        >
                           <p className="font-medium text-foreground">{trago.name}</p>
                           <p className="text-sm text-accent">${trago.price}</p>
-                        </div>
+                        </button>
                       ))}
                     </div>
                   )}
@@ -106,26 +118,13 @@ export function Navbar() {
           </div>
 
           <div className="hidden md:flex items-center gap-8">
-            <a href="/#inicio" className="text-foreground hover:text-primary transition-colors">
-              Inicio
-            </a>
-            <a href="/#boliches" className="text-foreground hover:text-primary transition-colors">
-              Boliches
-            </a>
-            <a href="/eventos" className="text-foreground hover:text-primary transition-colors">
-              Eventos y Fiestas
-            </a>
-            <a href="/precios" className="text-foreground hover:text-primary transition-colors">
-              Comparador de Precios
-            </a>
+            <a href="/#inicio" className="text-foreground hover:text-primary transition-colors">Inicio</a>
+            <a href="/#boliches" className="text-foreground hover:text-primary transition-colors">Boliches</a>
+            <a href="/eventos" className="text-foreground hover:text-primary transition-colors">Eventos</a>
+            <a href="/precios" className="text-foreground hover:text-primary transition-colors">Precios</a>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-foreground hover:text-primary transition-colors"
-            aria-label="Toggle menu"
-          >
+          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-foreground hover:text-primary transition-colors" aria-label="Toggle menu">
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
@@ -155,7 +154,7 @@ export function Navbar() {
                           className="w-full text-left px-3 py-2 hover:bg-secondary rounded-md transition-colors"
                         >
                           <p className="font-medium text-foreground">{boliche.name}</p>
-                          <p className="text-sm text-muted-foreground">{boliche.nightTheme}</p>
+                          <p className="text-sm text-muted-foreground">{boliche.barrio}</p>
                         </button>
                       ))}
                     </div>
@@ -165,44 +164,27 @@ export function Navbar() {
                     <div className="p-2 border-t border-border">
                       <p className="text-xs font-semibold text-muted-foreground px-3 py-2">TRAGOS</p>
                       {searchResults.tragos.slice(0, 5).map((trago) => (
-                        <div key={trago.id} className="px-3 py-2 hover:bg-secondary rounded-md transition-colors">
+                        <button
+                          key={trago.id}
+                          onClick={() => handleSelectTrago(trago.name)}
+                          className="w-full text-left px-3 py-2 hover:bg-secondary rounded-md transition-colors"
+                        >
                           <p className="font-medium text-foreground">{trago.name}</p>
                           <p className="text-sm text-accent">${trago.price}</p>
-                        </div>
+                        </button>
                       ))}
                     </div>
                   )}
                 </div>
               )}
             </div>
-            <a
-              href="/#inicio"
-              className="block text-foreground hover:text-primary transition-colors"
-              onClick={() => setIsOpen(false)}
-            >
-              Inicio
-            </a>
-            <a
-              href="/#boliches"
-              className="block text-foreground hover:text-primary transition-colors"
-              onClick={() => setIsOpen(false)}
-            >
-              Boliches
-            </a>
-            <a
-              href="/eventos"
-              className="block text-foreground hover:text-primary transition-colors"
-              onClick={() => setIsOpen(false)}
-            >
-              Eventos y Fiestas
-            </a>
-            <a
-              href="/precios"
-              className="block text-foreground hover:text-primary transition-colors"
-              onClick={() => setIsOpen(false)}
-            >
-              Comparador de Precios
-            </a>
+
+            <div className="flex flex-col gap-4 pt-4">
+              <a href="/#inicio" className="text-foreground hover:text-primary transition-colors">Inicio</a>
+              <a href="/#boliches" className="text-foreground hover:text-primary transition-colors">Boliches</a>
+              <a href="/eventos" className="text-foreground hover:text-primary transition-colors">Eventos</a>
+              <a href="/precios" className="text-foreground hover:text-primary transition-colors">Precios</a>
+            </div>
           </div>
         )}
       </div>

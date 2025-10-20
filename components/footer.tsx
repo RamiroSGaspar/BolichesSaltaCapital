@@ -1,4 +1,4 @@
-import { Wine, Instagram, Facebook, Twitter, Settings } from "lucide-react"
+import { Wine, Linkedin, MessageCircle, Settings } from "lucide-react"
 
 export function Footer() {
   return (
@@ -29,11 +29,6 @@ export function Footer() {
                   Boliches
                 </a>
               </li>
-              <li>
-                <a href="#precios" className="text-muted-foreground hover:text-primary transition-colors text-sm">
-                  Precios
-                </a>
-              </li>
             </ul>
           </div>
 
@@ -42,50 +37,41 @@ export function Footer() {
             <h3 className="font-semibold text-card-foreground">Información</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm">
-                  Sobre Nosotros
-                </a>
+                <a href="/sobre-nosotros" className="text-muted-foreground hover:text-primary transition-colors text-sm">Sobre Nosotros</a>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm">
-                  Términos y Condiciones
-                </a>
+                <a href="/sobre-nosotros" className="text-muted-foreground hover:text-primary transition-colors text-sm">Términos y Condiciones</a>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm">
-                  Política de Privacidad
-                </a>
+                <a href="/sobre-nosotros" className="text-muted-foreground hover:text-primary transition-colors text-sm">Política de Privacidad</a>
               </li>
             </ul>
           </div>
 
           {/* Social */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-card-foreground">Redes Sociales</h3>
+            <h3 className="font-semibold text-card-foreground">Contacto</h3>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Seguinos para estar al tanto de las mejores ofertas
+              Conectate conmigo para consultas o sugerencias
             </p>
             <div className="flex gap-4">
               <a
-                href="#"
+                href="https://www.linkedin.com/in/ramiro-sebastian-gaspar-b41697317/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="p-2 rounded-lg bg-secondary hover:bg-primary hover:text-primary-foreground transition-colors"
-                aria-label="Instagram"
+                aria-label="LinkedIn"
               >
-                <Instagram className="h-5 w-5" />
+                <Linkedin className="h-5 w-5"  />
               </a>
               <a
-                href="#"
+                href="https://wa.me/5493875750817"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="p-2 rounded-lg bg-secondary hover:bg-primary hover:text-primary-foreground transition-colors"
-                aria-label="Facebook"
+                aria-label="WhatsApp"
               >
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                className="p-2 rounded-lg bg-secondary hover:bg-primary hover:text-primary-foreground transition-colors"
-                aria-label="Twitter"
-              >
-                <Twitter className="h-5 w-5" />
+                <MessageCircle className="h-5 w-5" />
               </a>
             </div>
           </div>

@@ -1,6 +1,27 @@
+"use client"
+
+import { useState, useEffect } from "react"
 import { Sparkles } from "lucide-react"
+import { getAllBoliches } from "@/lib/api/boliches"
+import { getAllTragos } from "@/lib/api/tragos"
 
 export function HeroSection() {
+  const [stats, setStats] = useState({
+    boliches: 0,
+    tragos: 0
+  })
+
+  useEffect(() => {
+    Promise.all([getAllBoliches(), getAllTragos()])
+      .then(([b, t]) => {
+        setStats({
+          boliches: b.length,
+          tragos: t.length
+        })
+      })
+      .catch(err => console.error(err))
+  }, [])
+
   return (
     <section id="inicio" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-card" />
@@ -17,24 +38,21 @@ export function HeroSection() {
             <span className="text-sm text-foreground">La vida nocturna de Salta en un solo lugar</span>
           </div>
 
-          {/* Main Heading */}
           <h1 className="text-5xl md:text-7xl font-bold text-balance leading-tight">
             Descubrí la <span className="text-primary">noche salteña</span> al mejor precio
           </h1>
 
-          {/* Subheading */}
           <p className="text-xl md:text-2xl text-muted-foreground text-balance max-w-2xl mx-auto leading-relaxed">
             Explorá los boliches de Salta Capital, compará precios de tragos y encontrá las mejores noches.
           </p>
 
-          {/* Stats */}
           <div className="grid grid-cols-3 gap-8 pt-12 max-w-2xl mx-auto">
             <div className="space-y-2">
-              <div className="text-3xl md:text-4xl font-bold text-primary">15+</div>
+              <div className="text-3xl md:text-4xl font-bold text-primary">{stats.boliches}+</div>
               <div className="text-sm text-muted-foreground">Boliches</div>
             </div>
             <div className="space-y-2">
-              <div className="text-3xl md:text-4xl font-bold text-accent">200+</div>
+              <div className="text-3xl md:text-4xl font-bold text-accent">{stats.tragos}+</div>
               <div className="text-sm text-muted-foreground">Tragos</div>
             </div>
             <div className="space-y-2">

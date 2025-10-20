@@ -1,41 +1,56 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Search, TrendingDown, DollarSign } from "lucide-react"
-import { tragos, boliches, preciosPorBoliche } from "@/lib/data"
+import { getAllTragos } from "@/lib/api/tragos"
+import { getAllBoliches } from "@/lib/api/boliches"
+import { getAllPrecios } from "@/lib/api/precios"
+import type { Trago, Boliche } from "@/lib/data"
 import { useRouter } from "next/navigation"
 
 export function ComparadorPrecios() {
-  const [searchQuery, setSearchQuery] = useState("")
   const router = useRouter()
+  const [tragos, setTragos] = useState<Trago[]>([])
+  const [boliches, setBoliches] = useState<Boliche[]>([])
+  const [precios, setPrecios] = useState<any[]>([])
+  const [searchQuery, setSearchQuery] = useState("")
+  const [loading, setLoading] = useState(true)
 
-  // Filtrar tragos populares para mostrar
+  useEffect(() => {
+    Promise.all([getAllTragos(), getAllBoliches(), getAllPrecios()])
+      .then(([t, b, p]) => {
+        setTragos(t)
+        setBoliches(b)
+        setPrecios(p)
+      })
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false))
+  }, [])
+
   const tragosPopulares = ["fernet-coca", "cerveza-quilmes", "gin-tonic", "vodka-energy", "campari", "shot-jager"]
-
   const tragosFiltrados = searchQuery
     ? tragos.filter((t) => t.name.toLowerCase().includes(searchQuery.toLowerCase()))
     : tragos.filter((t) => tragosPopulares.includes(t.id))
 
   const getPrecioMasBajo = (tragoId: string) => {
-    const precios = preciosPorBoliche.filter((p) => p.tragoId === tragoId && p.disponible)
-    if (precios.length === 0) return null
+    const preciosTrago = precios.filter((p) => p.trago_id === tragoId && p.disponible)
+    if (preciosTrago.length === 0) return null
 
-    const minPrecio = Math.min(...precios.map((p) => p.precio))
-    const boliche = precios.find((p) => p.precio === minPrecio)
-    const bolicheData = boliches.find((b) => b.id === boliche?.bolicheId)
+    const minPrecio = Math.min(...preciosTrago.map((p) => p.precio))
+    const precioObj = preciosTrago.find((p) => p.precio === minPrecio)
+    const boliche = boliches.find((b) => b.id === precioObj?.boliche_id)
 
-    return {
-      precio: minPrecio,
-      boliche: bolicheData?.name || "",
-    }
+    return { precio: minPrecio, boliche: boliche?.name || "", bolicheId: precioObj?.boliche_id }
   }
 
+  if (loading) return <div className="py-24 text-center">Cargando precios...</div>
+
   return (
-    <section className="py-24 bg-background">
+    <section id="precios" className="py-24 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center space-y-4 mb-16">
           <div className="flex items-center justify-center gap-3">
@@ -49,7 +64,6 @@ export function ComparadorPrecios() {
           </p>
         </div>
 
-        {/* Buscador */}
         <div className="max-w-2xl mx-auto mb-12">
           <div className="relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -63,7 +77,6 @@ export function ComparadorPrecios() {
           </div>
         </div>
 
-        {/* Tabla comparativa simplificada */}
         <Card className="overflow-hidden">
           <CardHeader>
             <CardTitle>Comparador Rápido</CardTitle>
@@ -83,7 +96,11 @@ export function ComparadorPrecios() {
                   {tragosFiltrados.slice(0, 6).map((trago) => {
                     const mejorPrecio = getPrecioMasBajo(trago.id)
                     return (
-                      <tr key={trago.id} className="border-b hover:bg-secondary/50 transition-colors">
+                      <tr 
+                        key={trago.id} 
+                        className="border-b hover:bg-secondary/50 transition-colors cursor-pointer"
+                        onClick={() => mejorPrecio?.bolicheId && router.push(`/boliche/${mejorPrecio.bolicheId}`)}
+                      >
                         <td className="py-4 px-4 font-medium">{trago.name}</td>
                         <td className="py-4 px-4 hidden md:table-cell">
                           <Badge variant="outline">{trago.category}</Badge>

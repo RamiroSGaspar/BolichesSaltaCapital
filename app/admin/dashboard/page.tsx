@@ -1,156 +1,143 @@
+"use client"
+
+import { useState, useEffect } from "react"
 import { AdminHeader } from "@/components/admin/header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Building2, Wine, PartyPopper, Megaphone, Plus } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Building2, Wine, PartyPopper } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-
-const stats = [
-  { icon: Building2, label: "Boliches Activos", value: "15", color: "text-blue-600" },
-  { icon: Wine, label: "Tragos en Catálogo", value: "87", color: "text-purple-600" },
-  { icon: PartyPopper, label: "Eventos Próximos", value: "12", color: "text-pink-600" },
-  { icon: Megaphone, label: "Banners Activos", value: "3", color: "text-green-600" },
-]
-
-const recentActivity = [
-  { icon: "📝", text: 'Precio de "Fernet con Coca" actualizado en Macondo', time: "Hace 2 horas" },
-  { icon: "➕", text: 'Nuevo boliche agregado: "La Vieja Estación"', time: "Ayer, 18:30" },
-  { icon: "🎉", text: 'Evento "Fiesta de los 80s" creado en Patio', time: "Hace 3 días" },
-  { icon: "💰", text: "Actualización masiva de precios completada", time: "Hace 5 días" },
-  { icon: "📢", text: "Nuevo banner publicitario activado", time: "Hace 1 semana" },
-]
-
-const upcomingEvents = [
-  {
-    name: "Fiesta Neon",
-    venue: "Macondo",
-    date: "Viernes 15/10",
-    image: "/nightclub-interior-red-lights.jpg",
-  },
-  {
-    name: "Rock Night",
-    venue: "La Vieja Estación",
-    date: "Sábado 16/10",
-    image: "/bar-vintage-warm-lights.jpg",
-  },
-]
+import { getAllBoliches } from "@/lib/api/boliches"
+import { getAllTragos } from "@/lib/api/tragos"
+import { getAllEventos } from "@/lib/api/eventos"
+import { useRouter } from "next/navigation"
 
 export default function DashboardPage() {
-  const currentDate = new Date().toLocaleDateString("es-AR", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+  const router = useRouter()
+  const [stats, setStats] = useState({
+    boliches: 0,
+    tragos: 0,
+    eventos: 0
   })
+  const [proximosEventos, setProximosEventos] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  async function fetchData() {
+    try {
+      const [boliches, tragos, eventos] = await Promise.all([
+        getAllBoliches(),
+        getAllTragos(),
+        getAllEventos()
+      ])
+
+      const hoy = new Date()
+      hoy.setHours(0, 0, 0, 0)
+      const proximos = eventos.filter(e => {
+        const fecha = new Date(e.fecha)
+        fecha.setHours(0, 0, 0, 0)
+        return fecha >= hoy
+      }).slice(0, 2)
+
+      setStats({
+        boliches: boliches.length,
+        tragos: tragos.length,
+        eventos: proximos.length
+      })
+      setProximosEventos(proximos)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const currentDate = new Intl.DateTimeFormat("es-AR", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  }).format(new Date())
+
+  if (loading) return <div className="p-6">Cargando...</div>
 
   return (
     <>
       <AdminHeader title="Dashboard" />
       <div className="p-6 space-y-6">
-        {/* Welcome Section */}
         <div>
           <h2 className="text-3xl font-bold">Bienvenido, Admin</h2>
           <p className="text-muted-foreground capitalize">{currentDate}</p>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {stats.map((stat) => {
-            const Icon = stat.icon
-            return (
-              <Card key={stat.label}>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-muted-foreground">{stat.label}</p>
-                      <p className="text-3xl font-bold mt-2">{stat.value}</p>
-                    </div>
-                    <div className={`p-3 rounded-full bg-gray-100 ${stat.color}`}>
-                      <Icon className="h-6 w-6" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )
-          })}
-        </div>
-
-        {/* Quick Actions */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Acciones Rápidas</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-3">
-              <Button className="bg-purple-600 hover:bg-purple-700">
-                <Plus className="h-4 w-4 mr-2" />
-                Agregar Boliche
-              </Button>
-              <Button className="bg-purple-600 hover:bg-purple-700">
-                <Plus className="h-4 w-4 mr-2" />
-                Agregar Trago
-              </Button>
-              <Button className="bg-purple-600 hover:bg-purple-700">
-                <Plus className="h-4 w-4 mr-2" />
-                Crear Evento
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Recent Activity */}
+        <div className="grid gap-6 md:grid-cols-3">
           <Card>
-            <CardHeader>
-              <CardTitle>Actividad Reciente</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {recentActivity.map((activity, index) => (
-                  <div key={index} className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                    <span className="text-2xl">{activity.icon}</span>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">{activity.text}</p>
-                      <p className="text-xs text-muted-foreground mt-1">{activity.time}</p>
-                    </div>
-                  </div>
-                ))}
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Boliches Activos</p>
+                  <p className="text-3xl font-bold">{stats.boliches}</p>
+                </div>
+                <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
+                  <Building2 className="h-6 w-6 text-blue-600" />
+                </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Upcoming Events */}
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Tragos en Catálogo</p>
+                  <p className="text-3xl font-bold">{stats.tragos}</p>
+                </div>
+                <div className="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center">
+                  <Wine className="h-6 w-6 text-purple-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Eventos Próximos</p>
+                  <p className="text-3xl font-bold">{stats.eventos}</p>
+                </div>
+                <div className="h-12 w-12 rounded-full bg-pink-100 flex items-center justify-center">
+                  <PartyPopper className="h-6 w-6 text-pink-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {proximosEventos.length > 0 && (
           <Card>
             <CardHeader>
               <CardTitle>Eventos Próximos</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {upcomingEvents.map((event, index) => (
-                  <div
-                    key={index}
-                    className="flex gap-4 p-3 rounded-lg border hover:border-purple-600 transition-colors"
-                  >
-                    <img
-                      src={event.image || "/placeholder.svg"}
-                      alt={event.name}
-                      className="w-24 h-24 rounded-lg object-cover"
-                    />
+                {proximosEventos.map((evento) => (
+                  <div key={evento.id} className="flex gap-4 p-3 rounded-lg border hover:border-purple-600 transition-colors cursor-pointer" onClick={() => router.push(`/evento/${evento.id}`)}>
+                    <img src={evento.poster || "/placeholder.svg"} alt={evento.nombre} className="w-24 h-24 rounded-lg object-cover" />
                     <div className="flex-1">
-                      <h3 className="font-semibold">{event.name}</h3>
-                      <p className="text-sm text-muted-foreground">{event.venue}</p>
+                      <h3 className="font-semibold">{evento.nombre}</h3>
+                      <p className="text-sm text-muted-foreground">{evento.boliche}</p>
                       <Badge variant="secondary" className="mt-2">
-                        {event.date}
+                        {new Date(evento.fecha).toLocaleDateString('es-AR')}
                       </Badge>
                     </div>
-                    <Button variant="ghost" size="sm">
-                      Ver detalles
-                    </Button>
                   </div>
                 ))}
               </div>
             </CardContent>
           </Card>
-        </div>
+        )}
       </div>
     </>
   )
