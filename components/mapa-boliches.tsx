@@ -30,7 +30,7 @@ export function MapaBoliches() {
       const salta = { lat: -24.7859, lng: -65.4117 }
       
       const map = new window.google.maps.Map(mapRef.current!, {
-        zoom: 14,
+        zoom: 11,
         center: salta,
         styles: [
           {
