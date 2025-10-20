@@ -3,6 +3,11 @@ import { Footer } from "@/components/footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Shield, Eye, Lock, Database } from "lucide-react"
 
+export const metadata = {
+  title: "Política de Privacidad | Tragos Salta",
+  description: "Cómo protegemos tu información en Tragos Salta.",
+}
+
 export default function PrivacidadPage() {
   return (
     <main className="min-h-screen bg-background">

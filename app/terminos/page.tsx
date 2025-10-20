@@ -2,6 +2,12 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
+
+export const metadata = {
+  title: "Términos y Condiciones | Tragos Salta",
+  description: "Términos de uso de Tragos Salta, tu guía de precios de boliches en Salta Capital.",
+}
+
 export default function TerminosPage() {
   return (
     <main className="min-h-screen bg-background">

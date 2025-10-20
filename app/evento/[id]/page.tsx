@@ -11,11 +11,30 @@ import { Calendar, Clock, MapPin, Music, DollarSign, Share2, MessageCircle, Cale
 import { getEventoById, getEventosByBoliche } from "@/lib/api/eventos"
 import { getBolicheById } from "@/lib/api/boliches"
 
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const evento = await getEventoById(params.id)
+  
+  if (!evento) {
+    return {
+      title: "Evento no encontrado - Tragos Salta"
+    }
+  }
+
+  const fecha = new Date(evento.fecha).toLocaleDateString('es-AR')
+
+  return {
+    title: `${evento.nombre} en ${evento.boliche} | Eventos Salta`,
+    description: `${evento.tematica} - ${fecha} - ${evento.hora}. ${evento.descripcion} Entrada: $${evento.precio}`,
+    keywords: `${evento.nombre}, ${evento.boliche}, eventos salta, ${evento.tematica}, joda salta`,
+  }
+}
+
 export default function EventoPage({ params }: { params: Promise<{ id: string }> }) {
   const [evento, setEvento] = useState<any>(null)
   const [boliche, setBoliche] = useState<any>(null)
   const [otrosEventos, setOtrosEventos] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  
 
   useEffect(() => {
     async function fetchData() {

@@ -3,6 +3,12 @@ import { Footer } from "@/components/footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Wine, Heart, Users, TrendingUp } from "lucide-react"
 
+export const metadata = {
+  title: "Sobre Nosotros | Guía de Boliches de Salta Capital",
+  description: "La guía más completa para salir de joda en Salta. Precios actualizados de tragos, fernet y cerveza en todos los boliches de la capital salteña.",
+  keywords: "guia boliches salta, vida nocturna salta, salir salta",
+}
+
 export default function SobreNosotrosPage() {
   return (
     <main className="min-h-screen bg-background">
