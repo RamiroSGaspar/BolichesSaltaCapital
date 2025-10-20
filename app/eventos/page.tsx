@@ -12,11 +12,7 @@ import { Search, Calendar, Filter } from "lucide-react"
 import { getAllEventos } from "@/lib/api/eventos"
 import type { Evento } from "@/lib/data"
 
-export const metadata = {
-  title: "Eventos y Jodas en Salta | Fiestas Boliches Salta Capital",
-  description: "Todas las jodas y eventos de la semana en Salta. Fiestas electrónicas, rock, reggaeton en Balcarce y los mejores boliches de Salta Capital. Info de precios de entrada y promos.",
-  keywords: "jodas salta, fiestas salta, eventos boliches salta, balcarce salta, que hacer salta, salir bailar salta, fiestas electronicas salta",
-}
+
 
 export default function EventosPublicPage() {
   const [eventos, setEventos] = useState<Evento[]>([])
