@@ -79,7 +79,7 @@ export default function TerminosPage() {
                 <CardTitle>4. Uso Apropiado</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 text-muted-foreground">
-                <p>Al usar Tragos Salta, te comprometés a:</p>
+                <p>Al usar Boliches - Salta Capital, te comprometés a:</p>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Usar la información de manera responsable</li>
                   <li>No utilizar la plataforma para fines comerciales sin autorización</li>
