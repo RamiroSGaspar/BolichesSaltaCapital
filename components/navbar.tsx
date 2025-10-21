@@ -119,7 +119,7 @@ export function Navbar() {
 
           <div className="hidden md:flex items-center gap-8">
             <a href="/#inicio" className="text-foreground hover:text-primary transition-colors">Inicio</a>
-            <a href="/#boliches" className="text-foreground hover:text-primary transition-colors">Boliches</a>
+            <a href="/boliches" className="text-foreground hover:text-primary transition-colors">Boliches</a>
             <a href="/eventos" className="text-foreground hover:text-primary transition-colors">Eventos</a>
             <a href="/precios" className="text-foreground hover:text-primary transition-colors">Precios</a>
           </div>
@@ -181,7 +181,7 @@ export function Navbar() {
 
             <div className="flex flex-col gap-4 pt-4">
               <a href="/#inicio" className="text-foreground hover:text-primary transition-colors">Inicio</a>
-              <a href="/#boliches" className="text-foreground hover:text-primary transition-colors">Boliches</a>
+              <a href="/boliches" className="text-foreground hover:text-primary transition-colors">Boliches</a>
               <a href="/eventos" className="text-foreground hover:text-primary transition-colors">Eventos</a>
               <a href="/precios" className="text-foreground hover:text-primary transition-colors">Precios</a>
             </div>

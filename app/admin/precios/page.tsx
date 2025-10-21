@@ -109,20 +109,20 @@ export default function PreciosPage() {
           <CardContent className="p-0">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="border-b bg-gray-50">
+                <thead className="border-b bg-secondary">
                   <tr>
-                    <th className="text-left p-4 font-semibold">Trago</th>
-                    {boliches.map(b => <th key={b.id} className="text-center p-4 font-semibold">{b.name}</th>)}
+                    <th className="text-left p-4 font-semibold text-foreground">Trago</th>
+                    {boliches.map(b => <th key={b.id} className="text-center p-4 font-semibold text-foreground">{b.name}</th>)}
                   </tr>
                 </thead>
                 <tbody>
                   {tragos.map((trago) => (
-                    <tr key={trago.id} className="border-b hover:bg-gray-50">
-                      <td className="p-4 font-medium">{trago.name}</td>
+                    <tr key={trago.id} className="border-b hover:bg-secondary/50">
+                      <td className="p-4 font-medium text-foreground">{trago.name}</td>
                       {boliches.map(boliche => {
                         const precio = precios.find(p => p.boliche_id === boliche.id && p.trago_id === trago.id)
                         return (
-                          <td key={boliche.id} className="p-4 text-center">
+                          <td key={boliche.id} className="p-4 text-center text-foreground">
                             {precio ? `$${precio.precio}` : <span className="text-muted-foreground">-</span>}
                           </td>
                         )

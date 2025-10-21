@@ -34,7 +34,7 @@ export function ProductCards() {
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {boliches.map((boliche) => (
+          {boliches.slice(0, 6).map((boliche) => (
             <Card key={boliche.id} onClick={() => router.push(`/boliche/${boliche.id}`)} className="group hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20 bg-card border-border overflow-hidden cursor-pointer">
               <div className="relative h-48 bg-secondary overflow-hidden">
                 <img src={boliche.image || "/placeholder.svg"} alt={boliche.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
@@ -43,18 +43,40 @@ export function ProductCards() {
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <h3 className="text-2xl font-bold text-card-foreground group-hover:text-primary transition-colors">{boliche.name}</h3>
-                  <a href={`https://instagram.com/${boliche.instagram.replace("@", "")}`} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-secondary hover:bg-primary hover:text-primary-foreground transition-colors" onClick={(e) => e.stopPropagation()}><Instagram className="h-5 w-5" /></a>
+                  <a href={`https://instagram.com/${boliche.instagram.replace("@", "")}`} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-secondary hover:bg-primary hover:text-primary-foreground transition-colors" onClick={(e) => e.stopPropagation()}>
+                    <Instagram className="h-5 w-5" />
+                  </a>
                 </div>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div className="flex items-center gap-2 text-muted-foreground"><MapPin className="h-4 w-4 text-accent" /><span className="text-sm font-medium text-foreground">{boliche.barrio}</span></div>
-                <div className="flex items-center gap-2 text-muted-foreground text-sm"><Clock className="h-4 w-4" /><span>{boliche.horario}</span></div>
-                <div className="flex items-center gap-2 text-muted-foreground text-sm"><MapPin className="h-4 w-4" /><span>{boliche.location}</span></div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <MapPin className="h-4 w-4 text-accent" />
+                  <span className="text-sm">{boliche.location}</span>
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Clock className="h-4 w-4 text-accent" />
+                  <span className="text-sm">{boliche.horario}</span>
+                </div>
+                <p className="text-sm text-muted-foreground line-clamp-2">{boliche.description}</p>
               </CardContent>
-              <CardFooter className="pt-0"><Button variant="ghost" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">Ver precios y horarios</Button></CardFooter>
+              <CardFooter className="pt-0">
+                <Button variant="ghost" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">Ver precios</Button>
+              </CardFooter>
             </Card>
           ))}
         </div>
+        
+        {boliches.length > 6 && (
+          <div className="text-center mt-12">
+            <Button 
+              size="lg" 
+              onClick={() => router.push('/boliches')}
+              className="bg-primary hover:bg-primary/90"
+            >
+              Ver todos los boliches
+            </Button>
+          </div>
+        )}
       </div>
     </section>
   )

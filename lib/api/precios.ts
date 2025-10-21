@@ -17,6 +17,8 @@ export async function updatePrecio(bolicheId: string, tragoId: string, precio: n
       trago_id: tragoId, 
       precio,
       disponible: true 
+    }, { 
+      onConflict: 'boliche_id,trago_id' 
     })
     .select()
   
