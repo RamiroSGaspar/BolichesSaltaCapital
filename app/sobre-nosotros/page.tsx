@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Wine, Heart, Users, TrendingUp } from "lucide-react"
 
 export const metadata = {
-  title: "Sobre Nosotros | Guía de Boliches de Salta Capital",
+  title: "Sobre Nosotros | Boliches - Salta Capital",
   description: "La guía más completa para salir de joda en Salta. Precios actualizados de tragos, fernet y cerveza en todos los boliches de la capital salteña.",
   keywords: "guia boliches salta, vida nocturna salta, salir salta",
 }
@@ -50,7 +50,7 @@ export default function SobreNosotrosPage() {
                 <p className="text-muted-foreground leading-relaxed ml-16 mt-4">
                   La frustración de no tener esta información básica antes de salir me llevó a pensar: ¿por qué no 
                   existe una plataforma donde pueda comparar precios, conocer la esencia de cada lugar y así tomar una 
-                  decisión más acertada? Así nació<strong className="text-foreground"> Tragos Salta</strong>.
+                  decisión más acertada? Así nació<strong className="text-foreground"> Boliches - Salta Capital</strong>.
                 </p>
               </CardContent>
             </Card>

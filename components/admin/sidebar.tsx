@@ -60,7 +60,7 @@ export function Sidebar() {
             <Wine className="h-8 w-8 text-purple-500" />
             <div>
               <h1 className="font-bold text-lg">Admin Panel</h1>
-              <p className="text-xs text-slate-400">Tragos Salta</p>
+              <p className="text-xs text-slate-400">Boliches Salta</p>
             </div>
           </div>
 

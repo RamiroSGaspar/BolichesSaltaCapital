@@ -10,12 +10,12 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   
   if (!boliche) {
     return {
-      title: "Boliche no encontrado - Tragos Salta"
+      title: "Boliche no encontrado - Boliches Salta"
     }
   }
 
   return {
-    title: `${boliche.name} | Precios y Horarios - Tragos Salta`,
+    title: `${boliche.name} | Precios y Horarios - Boliches Salta`,
     description: `Precios de tragos, fernet y cerveza en ${boliche.name} (${boliche.barrio}). Horarios: ${boliche.horario}. ${boliche.description}`,
     keywords: `${boliche.name} salta, precios ${boliche.name}, ${boliche.barrio} salta, boliches ${boliche.barrio}`,
   }

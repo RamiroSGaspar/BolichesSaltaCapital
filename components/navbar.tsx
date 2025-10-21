@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState, useEffect, useRef } from "react"
-import { Menu, X, Wine, Search } from "lucide-react"
+import { Menu, X, Wine, Search} from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { searchItems } from "@/lib/api/search"
 import { useRouter } from "next/navigation"
@@ -64,7 +64,7 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16">
           <a href="/" className="flex items-center gap-2">
             <Wine className="h-8 w-8 text-primary" />
-            <span className="font-bold text-xl text-foreground">Tragos Salta</span>
+            <span className="font-bold text-xl text-foreground">Boliches - Salta Capital</span>
           </a>
 
           <div className="hidden md:flex items-center flex-1 max-w-md mx-8" ref={searchRef}>

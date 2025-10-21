@@ -9,14 +9,14 @@ import { Suspense } from "react"
 export const metadata: Metadata = {
   metadataBase: new URL('https://boliches-salta-capital.vercel.app/'), // Cambia por tu dominio
   title: {
-    default: "Tragos Salta - Precios de Boliches en Salta Capital",
-    template: "%s | Tragos Salta"
+    default: "Boliches - Salta Capital | Boliches, Precios y Eventos",
+    template: "%s | Boliches Salta"
   },
   description: "Compará precios de tragos en todos los boliches de Salta Capital. Encontrá las mejores ofertas, eventos y horarios actualizados.",
   keywords: "boliches salta, precios tragos salta, joda salta, noche salteña, fernet salta, cerveza salta, balcarce salta",
-  authors: [{ name: "Tragos Salta" }],
-  creator: "Tragos Salta",
-  publisher: "Tragos Salta",
+  authors: [{ name: "Boliches - Salta Capital" }],
+  creator: "Boliches - Salta Capital",
+  publisher: "Boliches - Salta Capital",
   formatDetection: {
     email: false,
     address: false,
@@ -26,8 +26,8 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'es_AR',
     url: 'https://boliches-salta-capital.vercel.app/',
-    siteName: 'Tragos Salta',
-    title: 'Tragos Salta - Precios de Boliches',
+    siteName: 'Boliches - Salta Capital',
+    title: 'Boliches - Salta Capital | Boliches, Precios y Eventos',
     description: 'Compará precios de tragos en Salta Capital',
   },
   robots: {

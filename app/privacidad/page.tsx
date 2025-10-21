@@ -4,8 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Shield, Eye, Lock, Database } from "lucide-react"
 
 export const metadata = {
-  title: "Política de Privacidad | Tragos Salta",
-  description: "Cómo protegemos tu información en Tragos Salta.",
+  title: "Política de Privacidad | Boliches - Salta Capital",
+  description: "Cómo protegemos tu información en Boliches - Salta Capital.",
 }
 
 export default function PrivacidadPage() {
@@ -30,7 +30,7 @@ export default function PrivacidadPage() {
                   <div>
                     <h3 className="font-bold text-lg mb-2">Nuestro Compromiso</h3>
                     <p className="text-muted-foreground">
-                      En Tragos Salta, respetamos tu privacidad. Esta política explica qué información 
+                      En Boliches - Salta Capital, respetamos tu privacidad. Esta política explica qué información 
                       recopilamos (o mejor dicho, qué NO recopilamos) y cómo la manejamos.
                     </p>
                   </div>
@@ -49,7 +49,7 @@ export default function PrivacidadPage() {
               </CardHeader>
               <CardContent className="space-y-3 text-muted-foreground">
                 <p className="font-semibold text-foreground">
-                  Tragos Salta NO requiere registro de usuarios.
+                  Boliches - Salta Capital NO requiere registro de usuarios.
                 </p>
                 <p>No recopilamos ni almacenamos:</p>
                 <ul className="list-disc pl-6 space-y-2">

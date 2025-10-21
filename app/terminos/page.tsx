@@ -4,8 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 
 export const metadata = {
-  title: "Términos y Condiciones | Tragos Salta",
-  description: "Términos de uso de Tragos Salta, tu guía de precios de boliches en Salta Capital.",
+  title: "Términos y Condiciones | Boliches - Salta Capital",
+  description: "Términos de uso de Boliches - Salta Capital, tu guía de precios de boliches en Salta.",
 }
 
 export default function TerminosPage() {
@@ -29,7 +29,7 @@ export default function TerminosPage() {
               </CardHeader>
               <CardContent className="space-y-3 text-muted-foreground">
                 <p>
-                  Al acceder y utilizar Tragos Salta, aceptás estos términos y condiciones en su totalidad. 
+                  Al acceder y utilizar Boliches - Salta Capital, aceptás estos términos y condiciones en su totalidad. 
                   Si no estás de acuerdo con alguna parte de estos términos, no deberías usar este sitio web.
                 </p>
               </CardContent>
@@ -41,7 +41,7 @@ export default function TerminosPage() {
               </CardHeader>
               <CardContent className="space-y-3 text-muted-foreground">
                 <p>
-                  Tragos Salta es una plataforma informativa que proporciona datos sobre precios de tragos en 
+                  Boliches - Salta Capital es una plataforma informativa que proporciona datos sobre precios de tragos en 
                   diferentes establecimientos de Salta Capital. Este servicio es:
                 </p>
                 <ul className="list-disc pl-6 space-y-2">
@@ -109,7 +109,7 @@ export default function TerminosPage() {
               </CardHeader>
               <CardContent className="space-y-3 text-muted-foreground">
                 <p>
-                  Tragos Salta se proporciona "tal cual" sin garantías de ningún tipo. No nos hacemos 
+                  Boliches - Salta Capital se proporciona "tal cual" sin garantías de ningún tipo. No nos hacemos 
                   responsables por:
                 </p>
                 <ul className="list-disc pl-6 space-y-2">

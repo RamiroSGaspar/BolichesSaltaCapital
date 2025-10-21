@@ -9,10 +9,10 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Wine className="h-8 w-8 text-primary" />
-              <span className="font-bold text-xl text-card-foreground">Tragos Salta</span>
+              <span className="font-bold text-xl text-card-foreground">Boliches - Salta Capital</span>
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Tu guía definitiva para encontrar los mejores precios de tragos en la vida nocturna de Salta Capital.
+              Tu guía definitiva para encontrar los mejores lugares y precios de tragos en la vida nocturna de Salta Capital.
             </p>
           </div>
 
@@ -86,7 +86,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="mt-12 pt-8 border-t border-border text-center text-sm text-muted-foreground">
           <div className="flex items-center justify-center gap-2">
-            <p>© 2025 Tragos Salta. Todos los derechos reservados. Beber con moderación.</p>
+            <p>© 2025 Boliches - Salta Capital. Todos los derechos reservados. Beber con moderación.</p>
             <a
               href="/admin/login"
               className="inline-flex items-center justify-center p-1.5 rounded-md hover:bg-secondary transition-colors opacity-30 hover:opacity-100"
