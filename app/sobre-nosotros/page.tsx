@@ -37,15 +37,20 @@ export default function SobreNosotrosPage() {
                     <p className="text-muted-foreground leading-relaxed">
                       Todo comenzó con una experiencia personal. Como cualquier persona que sale a divertirse en Salta, 
                       me encontré varias veces en la situación de llegar a un boliche sin saber realmente cuánto iba a 
-                      gastar en tragos. A veces terminaba pagando mucho más de lo esperado, otras veces descubría que 
-                      había mejores opciones a pocas cuadras.
+                      gastar en tragos. A veces terminaba pagando mucho más de lo esperado, otras veces descubrí que 
+                      había opciones mejores a pocas cuadras.
                     </p>
                   </div>
                 </div>
                 <p className="text-muted-foreground leading-relaxed ml-16">
+                  Pero con el tiempo entendí que no se trataba solo de precios: también quería saber cómo era el ambiente 
+                  de cada lugar, qué tipo de música sonaba, cuál era la onda del público y, en definitiva, cuál era el 
+                  espacio que mejor encajaba con mis gustos para pasar una buena noche.
+                </p>
+                <p className="text-muted-foreground leading-relaxed ml-16 mt-4">
                   La frustración de no tener esta información básica antes de salir me llevó a pensar: ¿por qué no 
-                  existe una plataforma donde pueda comparar precios y tomar una decisión informada? Así nació 
-                  <strong className="text-foreground"> Tragos Salta</strong>.
+                  existe una plataforma donde pueda comparar precios, conocer la esencia de cada lugar y así tomar una 
+                  decisión más acertada? Así nació<strong className="text-foreground"> Tragos Salta</strong>.
                 </p>
               </CardContent>
             </Card>
@@ -112,8 +117,18 @@ export default function SobreNosotrosPage() {
                     Ayudanos a mantener la información precisa. Podés reportar errores o colaborar con el proyecto:
                   </p>
                   <div className="space-y-2 text-sm">
-                    <p><strong>Email:</strong> contacto@tragossalta.com</p>
-                    <p><strong>WhatsApp:</strong> +54 387 XXX-XXXX</p>
+                    <p><strong>Email:</strong> gapsar.sebastian@gmail.com</p>
+                    <p>
+                      <strong>WhatsApp:</strong>{" "}
+                      <a 
+                        href="https://wa.me/5493875750817" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline"
+                      >
+                        +54 9 3875 75-0817
+                      </a>
+                    </p>
                   </div>
                 </div>
               </CardContent>

@@ -46,13 +46,14 @@ export function HeroSection() {
             Explorá los boliches de Salta Capital, compará precios de tragos y encontrá las mejores noches.
           </p>
 
+          <div className="grid grid-cols-2 gap-8 pt-12 max-w-2xl mx-auto">
+            <div className="space-y-2">
+              <div className="text-3xl md:text-4xl font-bold text-primary">{stats.boliches}+</div>
+              <div className="text-sm text-muted-foreground">Boliches</div>
+            </div>
             <div className="space-y-2">
               <div className="text-3xl md:text-4xl font-bold text-accent">{stats.tragos}+</div>
               <div className="text-sm text-muted-foreground">Tragos</div>
-            </div>
-            <div className="space-y-2">
-              <div className="text-3xl md:text-4xl font-bold text-primary">24/7</div>
-              <div className="text-sm text-muted-foreground">Actualizado</div>
             </div>
           </div>
         </div>
