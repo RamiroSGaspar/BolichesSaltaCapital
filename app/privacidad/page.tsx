@@ -223,16 +223,6 @@ export default function PrivacidadPage() {
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>11. Contacto</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3 text-muted-foreground">
-                <p>Si tenés preguntas sobre esta política de privacidad:</p>
-                <p><strong>Email:</strong> contacto@tragossalta.com</p>
-              </CardContent>
-            </Card>
-
             <div className="mt-8 p-6 bg-primary/10 rounded-lg">
               <p className="text-sm text-muted-foreground text-center">
                 <strong className="text-foreground">Resumen:</strong> Respetamos tu privacidad. No recopilamos 

@@ -152,15 +152,6 @@ export default function TerminosPage() {
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>9. Contacto</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3 text-muted-foreground">
-                <p>Para consultas sobre estos términos:</p>
-                <p><strong>Email:</strong> contacto@tragossalta.com</p>
-              </CardContent>
-            </Card>
           </div>
         </div>
       </section>

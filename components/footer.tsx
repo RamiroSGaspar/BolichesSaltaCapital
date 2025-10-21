@@ -37,13 +37,19 @@ export function Footer() {
             <h3 className="font-semibold text-card-foreground">Información</h3>
             <ul className="space-y-2">
               <li>
-                <a href="/sobre-nosotros" className="text-muted-foreground hover:text-primary transition-colors text-sm">Sobre Nosotros</a>
+                <a href="/sobre-nosotros" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  Sobre Nosotros
+                </a>
               </li>
               <li>
-                <a href="/sobre-nosotros" className="text-muted-foreground hover:text-primary transition-colors text-sm">Términos y Condiciones</a>
+                <a href="/terminos" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  Términos y Condiciones
+                </a>
               </li>
               <li>
-                <a href="/sobre-nosotros" className="text-muted-foreground hover:text-primary transition-colors text-sm">Política de Privacidad</a>
+                <a href="/privacidad" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  Política de Privacidad
+                </a>
               </li>
             </ul>
           </div>
